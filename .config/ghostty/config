@@ -1,0 +1,112 @@
+# Ghostty config — icon-ready, modern, ergonomic.
+# Backups of previous versions live next to this file as config.bak.<timestamp>.
+# `ghostty +show-config --default --docs` prints all options with documentation.
+# `ghostty +list-themes` lists every available theme.
+
+# ── Font ──────────────────────────────────────────────────────────────────
+# FiraCode Nerd Font Mono is already installed locally. The "Nerd Font"
+# variant ships thousands of icon glyphs (folder/file/git/language icons),
+# which is what eza, starship, lazygit, fastfetch, etc. use.
+font-family = FiraCode Nerd Font Mono
+font-size = 13
+# Ligatures are FiraCode's signature. Toggle by commenting these out.
+# `calt` covers the standard ligature set; `liga` enables the rest.
+font-feature = calt
+font-feature = liga
+# Slightly tighter line height feels more "code editor" than "terminal".
+adjust-cell-height = -5%
+
+# ── Theme ─────────────────────────────────────────────────────────────────
+# Catppuccin Mocha — matches the shell styling configured in:
+#   ~/.config/starship.toml  (Catppuccin Mocha-aligned prompt palette)
+#   ~/.zshrc                (BAT_THEME="Catppuccin-mocha")
+theme = Catppuccin Mocha
+
+# ── Background opacity + blur ─────────────────────────────────────────────
+# Near-opaque so the Catppuccin palette stays clean even when Ghostty is
+# above a bright browser window; blur is ignored on GNOME/Mutter.
+background-opacity = 0.98
+background-blur = 20
+
+# ── Cursor ────────────────────────────────────────────────────────────────
+cursor-style = bar
+cursor-style-blink = true
+# Catppuccin pink accent cursor.
+cursor-color = #f5c2e7
+
+# ── Selection / copy ─────────────────────────────────────────────────────
+# Selecting text with the mouse copies it straight to the system clipboard
+# so Ctrl+V works without right-click → copy. PRIMARY (middle-click paste)
+# keeps working normally on X11.
+copy-on-select = clipboard
+# Soft Catppuccin selection tint.
+selection-background = #45475a
+selection-foreground = #cdd6f4
+
+# ── Window aesthetics ─────────────────────────────────────────────────────
+window-padding-x = 10
+window-padding-y = 8
+window-padding-balance = true
+window-padding-color = extend
+# Hide the cursor while typing — small but nice.
+mouse-hide-while-typing = true
+# Make URLs visibly clickable on hover.
+link-url = true
+# Keep titlebar/decorations on (set to "false" for a chromeless look).
+window-decoration = true
+# When a process sets the terminal title, let it through.
+window-title-font-family = FiraCode Nerd Font Mono
+
+# ── Scrollback ────────────────────────────────────────────────────────────
+# Default is 10_000 lines. Bump it; long terminal sessions and verbose builds
+# blow past that quickly.
+scrollback-limit = 100000
+
+# ── Bell ─────────────────────────────────────────────────────────────────
+# Drop the audio part; keep window-attention + title flash so you still
+# notice background completions without an annoying beep.
+bell-features = no-audio,attention,title
+
+# ── Confirm before closing ───────────────────────────────────────────────
+confirm-close-surface = true
+
+# ── Shell integration ─────────────────────────────────────────────────────
+# Auto-detects zsh and enables clickable cwd, command tracking, jump-to-
+# previous-prompt, etc. `detect` is the default, written explicitly.
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+# ── Quick terminal (drop-down) ────────────────────────────────────────────
+# Press Super+` (the key above Tab) anywhere to summon a drop-down
+# Ghostty. Press again to dismiss. Great for "quick lookup" terminals.
+keybind = global:super+grave_accent=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-screen = main
+quick-terminal-animation-duration = 0.15
+
+# ── Splits ────────────────────────────────────────────────────────────────
+# tmux-style splits, native to Ghostty (no tmux needed for basic usage).
+keybind = ctrl+shift+enter=new_split:right
+keybind = ctrl+shift+o=new_split:down
+# Navigate between splits.
+keybind = ctrl+shift+left=goto_split:left
+keybind = ctrl+shift+right=goto_split:right
+keybind = ctrl+shift+up=goto_split:up
+keybind = ctrl+shift+down=goto_split:down
+# Resize splits.
+keybind = ctrl+alt+left=resize_split:left,40
+keybind = ctrl+alt+right=resize_split:right,40
+keybind = ctrl+alt+up=resize_split:up,40
+keybind = ctrl+alt+down=resize_split:down,40
+# Zoom the focused split (toggle).
+keybind = ctrl+shift+z=toggle_split_zoom
+
+# ── Tabs ──────────────────────────────────────────────────────────────────
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+
+# ── Font size on the fly ──────────────────────────────────────────────────
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+0=reset_font_size

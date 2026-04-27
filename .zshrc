@@ -1,5 +1,4 @@
 # If you come from bash you might have to change your $PATH.
-# This is a common and recommended practice.
 export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
 # Path to your Oh My Zsh installation.
@@ -8,37 +7,15 @@ export ZSH="$HOME/.oh-my-zsh"
 # Path to your fzf installation.
 export FZF_BASE="$HOME/.fzf"
 
-# Set the name of the Oh My Zsh theme to load.
-# "robbyrussell" is the default. Find more at https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# Theme — left empty because Starship is the prompt now (initialised below).
+# Set this back to a name (e.g. "robbyrussell") to fall back to oh-my-zsh themes.
+ZSH_THEME=""
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment to change the auto-update behavior.
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line to enable command auto-correction.
+# Shell behavior
 ENABLE_CORRECTION="true"
-
-# Uncomment to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Set history timestamp format.
-# HIST_STAMPS="yyyy-mm-dd"
-
-# Which plugins would you like to load?
-# Note: Plugins like zsh-autosuggestions and zsh-syntax-highlighting need to be
-# installed separately. They are not bundled with Oh My Zsh.
-# e.g., git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# Plugins
 plugins=(
   git
   fzf
@@ -50,74 +27,84 @@ plugins=(
 
 source "$ZSH/oh-my-zsh.sh"
 
-# --------------------------------------------------------------------------- #
-# --                        USER & TOOL CONFIGURATION                        -- #
-# --------------------------------------------------------------------------- #
-# Place your personal configurations, aliases, and functions below this line.
+# ---------------------------------------------------------------------------
+# User & tool configuration
+# ---------------------------------------------------------------------------
 
-# To customize aliases, create a file like ~/.zsh_aliases and source it here.
-# if [ -f ~/.zsh_aliases ]; then
-#    source ~/.zsh_aliases
-# fi
+# fzf
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-## -----------------
-## fzf (Fuzzy Finder)
-## -----------------
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-## -----------------
-## nvm (Node Version Manager)
-## -----------------
+# nvm
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
-## -----------------
-## Bun
-## -----------------
+# Bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-# Bun completions
+[[ ":$PATH:" != *":$BUN_INSTALL/bin:"* ]] && export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-## -----------------
-## Console Ninja
-## -----------------
-export PATH="$HOME/.console-ninja/.bin:$PATH"
+# Console Ninja
+[[ ":$PATH:" != *":$HOME/.console-ninja/.bin:"* ]] && export PATH="$HOME/.console-ninja/.bin:$PATH"
 
-## -----------------
-## Angular CLI
-## -----------------
-# Load Angular CLI autocompletion if the 'ng' command is available.
-if command -v ng &> /dev/null; then
+# Angular CLI completion
+if command -v ng >/dev/null 2>&1; then
   source <(ng completion script)
 fi
 
-## -----------------
-## Android & Capacitor
-## -----------------
+# Android / Capacitor
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"
-export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"
-export PATH="$PATH:$ANDROID_SDK_ROOT/tools"
-export PATH="$PATH:$ANDROID_SDK_ROOT/tools/bin"
+[[ -d "$ANDROID_SDK_ROOT/emulator" ]] && export PATH="$PATH:$ANDROID_SDK_ROOT/emulator"
+[[ -d "$ANDROID_SDK_ROOT/platform-tools" ]] && export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"
+[[ -d "$ANDROID_SDK_ROOT/tools" ]] && export PATH="$PATH:$ANDROID_SDK_ROOT/tools"
+[[ -d "$ANDROID_SDK_ROOT/tools/bin" ]] && export PATH="$PATH:$ANDROID_SDK_ROOT/tools/bin"
 
-# You may need to set this to the location of your Android Studio installation.
-# The path can vary depending on your OS and installation method (e.g., Snap, JetBrains Toolbox).
-# Example for Linux (manual install):
-# export CAPACITOR_ANDROID_STUDIO_PATH="$HOME/android-studio/bin/studio.sh"
-# Example for macOS:
-# export CAPACITOR_ANDROID_STUDIO_PATH="/Applications/Android Studio.app"
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init - zsh)"
+fi
 
-## -----------------
-## Hardware Specific (Optional)
-## -----------------
-# This is for Intel VA-API drivers. Uncomment and set if needed for your hardware.
-# export LIBVA_DRIVER_NAME=iHD
+# ---------------------------------------------------------------------------
+# Modern terminal toolbox — icons, prompts, smarter defaults.
+# All binaries live in ~/.local/bin (already on PATH at the top of this file).
+# ---------------------------------------------------------------------------
+
+# Starship prompt — config: ~/.config/starship.toml
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+# zoxide — smarter `cd`. `z foo` jumps to the most-frecent dir matching foo,
+# `zi foo` opens an fzf picker. Replaces `cd` for everyday use.
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
+
+# eza — modern `ls` with icons + git status.
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza --icons --group-directories-first -lh --git'
+  alias la='eza --icons --group-directories-first -lha --git'
+  alias lt='eza --icons --tree --level=2 --group-directories-first'
+  alias lT='eza --icons --tree --level=4 --group-directories-first'
+fi
+
+# bat — `cat` with syntax highlighting + paging. Keep raw `cat` available
+# as `\cat` if any script needs the literal binary.
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat --paging=never --style=plain'
+  alias less='bat --paging=always'
+  export BAT_THEME="Catppuccin-mocha"
+  # Tell `man` to render through bat for colourised man pages.
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANROFFOPT="-c"
+fi
+
+# fastfetch — system info splash on new interactive shells.
+# Comment the line below if it ever feels too much.
+if command -v fastfetch >/dev/null 2>&1 && [[ $- == *i* ]] && [[ -z "$FASTFETCH_SHOWN" ]]; then
+  export FASTFETCH_SHOWN=1
+  fastfetch
+fi
