@@ -27,13 +27,13 @@ format = "[$symbol]($style) "
 style  = "bold #cba6f7"
 
 [os.symbols]
-Ubuntu   = ""
-Debian   = ""
-Arch     = "󰣇"
-Fedora   = ""
-Macos    = ""
-Linux    = ""
-Windows  = ""
+Ubuntu   = "Ubuntu"
+Debian   = "Debian"
+Arch     = "Arch"
+Fedora   = "Fedora"
+Macos    = "macOS"
+Linux    = "Linux"
+Windows  = "Windows"
 
 [username]
 show_always = false              # only show when SSH or root
@@ -52,11 +52,11 @@ truncation_length  = 4
 truncate_to_repo   = true
 read_only          = " 󰌾"
 read_only_style    = "#f38ba8"
-format             = "[ $path]($style)[$read_only]($read_only_style) "
+format             = "[$path]($style)[$read_only]($read_only_style) "
 
 # ── Git ───────────────────────────────────────────────────────────────────
 [git_branch]
-symbol = " "
+symbol = "git:"
 style  = "bold #f5c2e7"
 format = "on [$symbol$branch]($style) "
 
@@ -80,7 +80,7 @@ format = "\\([$state( $progress_current/$progress_total)]($style)\\) "
 
 # ── Languages / runtimes ──────────────────────────────────────────────────
 [nodejs]
-symbol = " "
+symbol = "node "
 style  = "bold #a6e3a1"
 format = "via [$symbol($version )]($style)"
 
@@ -90,40 +90,40 @@ style  = "bold #f9e2af"
 format = "via [$symbol($version )]($style)"
 
 [python]
-symbol = " "
+symbol = "py "
 style  = "bold #f9e2af"
 format = "via [$symbol(\\($virtualenv\\) )($version )]($style)"
 
 [rust]
-symbol = " "
+symbol = "rust "
 style  = "bold #fab387"
 format = "via [$symbol($version )]($style)"
 
 [golang]
-symbol = " "
+symbol = "go "
 style  = "bold #89dceb"
 format = "via [$symbol($version )]($style)"
 
 [java]
-symbol = " "
+symbol = "java "
 style  = "bold #f38ba8"
 format = "via [$symbol($version )]($style)"
 
 [php]
-symbol = " "
+symbol = "php "
 style  = "bold #cba6f7"
 
 [ruby]
-symbol = " "
+symbol = "ruby "
 style  = "bold #f38ba8"
 
 [dotnet]
-symbol = " "
+symbol = ".NET "
 style  = "bold #cba6f7"
 
 # ── DevOps ────────────────────────────────────────────────────────────────
 [docker_context]
-symbol = " "
+symbol = "docker "
 style  = "bold #89dceb"
 format = "via [$symbol$context]($style) "
 only_with_files = true

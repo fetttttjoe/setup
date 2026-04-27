@@ -1,3 +1,4 @@
-[user]
-	email = <fill>
-	name = <fill>
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true

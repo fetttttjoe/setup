@@ -1,14 +1,16 @@
 # setup
 
-Personal Ubuntu/GNOME terminal setup.
+Personal Ubuntu terminal setup.
 
-This repo tracks the normal terminal environment used on this machine:
+This repo targets Ubuntu desktop installs. It installs Ghostty explicitly and degrades gracefully only for desktop extras such as GNOME theme settings.
+
+It tracks the normal terminal environment used on this machine:
 
 - Ghostty with FiraCode Nerd Font, Catppuccin Mocha, high scrollback, splits/tabs, and copy-on-select
 - Zsh + Oh My Zsh
 - Starship prompt with a readable two-line Catppuccin-aligned layout
-- Modern CLI helpers when available: `eza`, `bat`, `zoxide`, `fzf`, `fastfetch`
-- Layan-Dark GTK desktop theme
+- Modern CLI helpers: `eza`, `bat`, `zoxide`, `fzf`, and `fastfetch`
+- Layan-Dark GTK desktop theme when GNOME settings are available
 
 ## Install
 
@@ -21,12 +23,21 @@ cd ~/setup
 The installer links:
 
 - `~/.zshrc`
-- `~/.gitconfig`
 - `~/.config/starship.toml`
 - `~/.config/ghostty/config`
 
 Existing files are moved into `~/dotfiles_old/<timestamp>/` before linking.
 
+For Git, the installer is deliberately conservative:
+
+- Existing `~/.gitconfig` files are preserved.
+- If no `~/.gitconfig` exists, the repo links a generic config with safe defaults only.
+- Personal Git identity, company remotes, access tokens, and other secrets are not tracked here.
+
 ## Notes
 
-Ghostty is linked/configured by this repo, but the package may not be available from the default Ubuntu apt sources. If the installer reports that Ghostty was skipped, install Ghostty manually and then open a new terminal window.
+Ghostty is installed by the script. If the package is not available from Ubuntu's default apt sources, the script adds `ppa:mkasberg/ghostty-ubuntu` and installs it from there.
+
+`fastfetch` is installed from Ubuntu apt when available. If apt does not provide it, the script downloads the latest `.deb` release from `fastfetch-cli/fastfetch` for `amd64` or `arm64`.
+
+The prompt avoids hidden path substitutions and blank runtime symbols, so it should stay readable on any machine.

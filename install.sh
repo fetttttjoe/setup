@@ -15,6 +15,18 @@ zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 export PATH="$local_bin:$HOME/.fzf/bin:$PATH"
 
+if [ ! -r /etc/os-release ]; then
+    echo "Unsupported OS: /etc/os-release is missing. This setup targets Ubuntu."
+    exit 1
+fi
+
+# shellcheck disable=SC1091
+. /etc/os-release
+if [ "${ID:-}" != "ubuntu" ]; then
+    echo "Unsupported OS: detected '${PRETTY_NAME:-unknown Linux}'. This setup targets Ubuntu."
+    exit 1
+fi
+
 install_optional_apt_package() {
     local package="$1"
     if apt-cache show "$package" >/dev/null 2>&1; then
@@ -22,6 +34,48 @@ install_optional_apt_package() {
     else
         echo "↪ Optional package '$package' is not available from configured apt sources; skipping."
     fi
+}
+
+install_ghostty() {
+    if command -v ghostty >/dev/null 2>&1; then
+        return
+    fi
+
+    echo "👻 Installing Ghostty..."
+    if ! apt-cache show ghostty >/dev/null 2>&1; then
+        sudo add-apt-repository -y ppa:mkasberg/ghostty-ubuntu
+        sudo apt-get update -y
+    fi
+
+    sudo apt-get install -y ghostty
+}
+
+install_fastfetch() {
+    if command -v fastfetch >/dev/null 2>&1; then
+        return
+    fi
+
+    echo "⚡ Installing fastfetch..."
+    if apt-cache show fastfetch >/dev/null 2>&1; then
+        sudo apt-get install -y fastfetch
+        return
+    fi
+
+    local arch asset temp_dir
+    arch="$(dpkg --print-architecture)"
+    case "$arch" in
+        amd64) asset="fastfetch-linux-amd64.deb" ;;
+        arm64) asset="fastfetch-linux-aarch64.deb" ;;
+        *)
+            echo "↪ No fastfetch release asset configured for architecture '$arch'; skipping."
+            return
+            ;;
+    esac
+
+    temp_dir="$(mktemp -d)"
+    curl -fL "https://github.com/fastfetch-cli/fastfetch/releases/latest/download/$asset" -o "$temp_dir/fastfetch.deb"
+    sudo apt-get install -y "$temp_dir/fastfetch.deb"
+    rm -rf "$temp_dir"
 }
 
 clone_plugin_if_missing() {
@@ -65,6 +119,20 @@ link_file() {
     ln -s "$source_path" "$target_path"
 }
 
+link_file_if_missing() {
+    local relative_path="$1"
+    local source_path="$repo_dir/$relative_path"
+    local target_path="$HOME/$relative_path"
+
+    if [ -e "$target_path" ] || [ -L "$target_path" ]; then
+        echo "↪ Preserving existing ~/$relative_path."
+        return
+    fi
+
+    mkdir -p "$(dirname "$target_path")"
+    ln -s "$source_path" "$target_path"
+}
+
 # ── Base packages ──────────────────────────────────────────────────────────
 echo "📦 Installing base packages..."
 sudo apt-get update -y
@@ -76,15 +144,24 @@ sudo apt-get install -y \
     git-lfs \
     psmisc \
     unzip \
-    fontconfig
+    fontconfig \
+    software-properties-common
 
-# Ubuntu 24.04 has these in universe on many installs. Keep them optional so a
-# minimal apt source setup does not break the whole bootstrap.
+if command -v add-apt-repository >/dev/null 2>&1; then
+    sudo add-apt-repository -y universe >/dev/null 2>&1 || true
+    sudo apt-get update -y
+fi
+
+# Ghostty is the actual terminal this setup targets. It comes from the Ubuntu
+# PPA maintained by Mike Kasberg when it is not already available in apt.
+install_ghostty
+
+# Keep these optional so older/minimal Ubuntu releases do not break the whole
+# bootstrap just because one convenience tool is unavailable from apt.
 echo "📦 Installing optional terminal tools from apt when available..."
 install_optional_apt_package eza
 install_optional_apt_package bat
-install_optional_apt_package fastfetch
-install_optional_apt_package ghostty
+install_fastfetch
 
 # Ubuntu's bat package may expose `batcat`; the shell config expects `bat`.
 mkdir -p "$local_bin"
@@ -143,35 +220,34 @@ if [ ! -d "$font_dir" ]; then
 fi
 
 # ── Desktop theme ──────────────────────────────────────────────────────────
-echo "🎨 Installing and applying Layan GTK theme..."
-layan_dir="$HOME/Layan-gtk-theme"
-if [ ! -d "$layan_dir" ]; then
-    git clone https://github.com/vinceliuice/Layan-gtk-theme.git "$layan_dir"
-    "$layan_dir/install.sh"
-fi
-
 if command -v gsettings >/dev/null 2>&1; then
-    gsettings set org.gnome.desktop.interface gtk-theme 'Layan-Dark'
-    gsettings set org.gnome.desktop.interface icon-theme 'Yaru-dark'
+    echo "🎨 Installing and applying Layan GTK theme..."
+    layan_dir="$HOME/Layan-gtk-theme"
+    if [ ! -d "$layan_dir" ]; then
+        git clone https://github.com/vinceliuice/Layan-gtk-theme.git "$layan_dir"
+    fi
+
+    if "$layan_dir/install.sh"; then
+        gsettings set org.gnome.desktop.interface gtk-theme 'Layan-Dark'
+        gsettings set org.gnome.desktop.interface icon-theme 'Yaru-dark'
+    else
+        echo "↪ Layan theme install failed; continuing without changing the GTK theme."
+    fi
+else
+    echo "↪ gsettings not available; skipping GNOME/Layan desktop theme."
 fi
 
 # ── Dotfiles ───────────────────────────────────────────────────────────────
 echo "🔗 Linking dotfiles..."
 link_file .zshrc
-link_file .gitconfig
 link_file .config/starship.toml
 link_file .config/ghostty/config
+link_file_if_missing .gitconfig
 
 # ── Default shell ──────────────────────────────────────────────────────────
-if [[ "$SHELL" != */zsh ]]; then
+if [[ "${SHELL:-}" != */zsh ]]; then
     echo "Changing default shell to Zsh..."
     chsh -s "$(command -v zsh)"
-fi
-
-if ! command -v ghostty >/dev/null 2>&1; then
-    echo ""
-    echo "⚠️  Ghostty is not installed. Install it manually, then this repo's"
-    echo "   ~/.config/ghostty/config symlink will be used automatically."
 fi
 
 echo ""
