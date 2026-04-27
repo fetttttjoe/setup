@@ -96,7 +96,8 @@ fi
 if command -v bat >/dev/null 2>&1; then
   alias cat='bat --paging=never --style=plain'
   alias less='bat --paging=always'
-  export BAT_THEME="Catppuccin-mocha"
+  # Let bat inherit the active terminal palette (TokyoNight in Ghostty).
+  export BAT_THEME="ansi"
   # Tell `man` to render through bat for colourised man pages.
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
   export MANROFFOPT="-c"

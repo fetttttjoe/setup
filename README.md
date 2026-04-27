@@ -6,10 +6,10 @@ This repo targets Ubuntu desktop installs. It installs Ghostty explicitly and de
 
 It tracks the normal terminal environment used on this machine:
 
-- Ghostty with FiraCode Nerd Font, Catppuccin Mocha, high scrollback, splits/tabs, and copy-on-select
+- Ghostty with FiraCode Nerd Font, TokyoNight, high scrollback, splits/tabs, and copy-on-select
 - Zsh + Oh My Zsh
-- Starship prompt with a readable two-line Catppuccin-aligned layout
-- Modern CLI helpers: `eza`, `bat`, `zoxide`, `fzf`, and `fastfetch`
+- Starship prompt with a readable two-line TokyoNight-aligned layout
+- Modern CLI helpers: `eza`, `bat`, `zoxide`, `fzf`, and TokyoNight-aligned `fastfetch`
 - Layan-Dark GTK desktop theme when GNOME settings are available
 
 ## Install
@@ -25,6 +25,8 @@ The installer links:
 - `~/.zshrc`
 - `~/.config/starship.toml`
 - `~/.config/ghostty/config`
+- `~/.config/ghostty/themes/tokyonight`
+- `~/.config/fastfetch/config.jsonc`
 
 Existing files are moved into `~/dotfiles_old/<timestamp>/` before linking.
 

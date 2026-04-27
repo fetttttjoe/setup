@@ -2,29 +2,29 @@
 # Docs: https://starship.rs/config/
 
 # Two-line prompt: info on top, the actual cursor on its own line.
-# Catppuccin Mocha-aligned palette.
+# TokyoNight-aligned palette.
 format = """
-[╭─](bold #6c7086) $os$username$hostname$directory$git_branch$git_status$git_state\
+[╭─](bold #414868) $os$username$hostname$directory$git_branch$git_status$git_state\
 $nodejs$bun$python$rust$golang$java$php$ruby$dotnet\
 $docker_context$kubernetes$package\
 $cmd_duration\
 $line_break\
-[╰─](bold #6c7086)$character"""
+[╰─](bold #414868)$character"""
 
 add_newline = true
 command_timeout = 1000
 
 # ── Prompt cursor ─────────────────────────────────────────────────────────
 [character]
-success_symbol = "[](bold #a6e3a1)"
-error_symbol   = "[](bold #f38ba8)"
-vimcmd_symbol  = "[](bold #94e2d5)"
+success_symbol = "[](bold #9ece6a)"
+error_symbol   = "[](bold #f7768e)"
+vimcmd_symbol  = "[](bold #7dcfff)"
 
 # ── User / host ───────────────────────────────────────────────────────────
 [os]
 disabled = false
 format = "[$symbol]($style) "
-style  = "bold #cba6f7"
+style  = "bold #bb9af7"
 
 [os.symbols]
 Ubuntu   = "Ubuntu"
@@ -37,31 +37,31 @@ Windows  = "Windows"
 
 [username]
 show_always = false              # only show when SSH or root
-style_user  = "bold #f9e2af"
-style_root  = "bold #f38ba8"
+style_user  = "bold #e0af68"
+style_root  = "bold #f7768e"
 format      = "[$user]($style)@"
 
 [hostname]
 ssh_only = true
-format   = "[$hostname](bold #fab387) "
+format   = "[$hostname](bold #e0af68) "
 
 # ── Directory ─────────────────────────────────────────────────────────────
 [directory]
-style              = "bold #89b4fa"
+style              = "bold #7aa2f7"
 truncation_length  = 4
 truncate_to_repo   = true
 read_only          = " 󰌾"
-read_only_style    = "#f38ba8"
+read_only_style    = "#f7768e"
 format             = "[$path]($style)[$read_only]($read_only_style) "
 
 # ── Git ───────────────────────────────────────────────────────────────────
 [git_branch]
 symbol = "git:"
-style  = "bold #f5c2e7"
+style  = "bold #bb9af7"
 format = "on [$symbol$branch]($style) "
 
 [git_status]
-style       = "bold #f38ba8"
+style       = "bold #f7768e"
 format      = "([\\[$all_status$ahead_behind\\]]($style) )"
 conflicted  = "="
 ahead       = "⇡${count}"
@@ -75,74 +75,74 @@ renamed     = "»${count}"
 deleted     = "✘${count}"
 
 [git_state]
-style = "bold #f9e2af"
+style = "bold #e0af68"
 format = "\\([$state( $progress_current/$progress_total)]($style)\\) "
 
 # ── Languages / runtimes ──────────────────────────────────────────────────
 [nodejs]
 symbol = "node "
-style  = "bold #a6e3a1"
+style  = "bold #9ece6a"
 format = "via [$symbol($version )]($style)"
 
 [bun]
 symbol = "🥟 "
-style  = "bold #f9e2af"
+style  = "bold #e0af68"
 format = "via [$symbol($version )]($style)"
 
 [python]
 symbol = "py "
-style  = "bold #f9e2af"
+style  = "bold #e0af68"
 format = "via [$symbol(\\($virtualenv\\) )($version )]($style)"
 
 [rust]
 symbol = "rust "
-style  = "bold #fab387"
+style  = "bold #e0af68"
 format = "via [$symbol($version )]($style)"
 
 [golang]
 symbol = "go "
-style  = "bold #89dceb"
+style  = "bold #7dcfff"
 format = "via [$symbol($version )]($style)"
 
 [java]
 symbol = "java "
-style  = "bold #f38ba8"
+style  = "bold #f7768e"
 format = "via [$symbol($version )]($style)"
 
 [php]
 symbol = "php "
-style  = "bold #cba6f7"
+style  = "bold #bb9af7"
 
 [ruby]
 symbol = "ruby "
-style  = "bold #f38ba8"
+style  = "bold #f7768e"
 
 [dotnet]
 symbol = ".NET "
-style  = "bold #cba6f7"
+style  = "bold #bb9af7"
 
 # ── DevOps ────────────────────────────────────────────────────────────────
 [docker_context]
 symbol = "docker "
-style  = "bold #89dceb"
+style  = "bold #7dcfff"
 format = "via [$symbol$context]($style) "
 only_with_files = true
 
 [kubernetes]
 disabled = false
 symbol   = "󱃾 "
-style    = "bold #89b4fa"
+style    = "bold #7aa2f7"
 format   = "on [$symbol$context( \\($namespace\\))]($style) "
 
 [package]
 symbol = "󰏗 "
-style  = "bold #fab387"
+style  = "bold #e0af68"
 format = "via [$symbol$version]($style) "
 
 # ── Command duration ──────────────────────────────────────────────────────
 [cmd_duration]
 min_time = 2000                  # only show if command took >2s
-style    = "bold #f9e2af"
+style    = "bold #e0af68"
 format   = "took [ $duration]($style) "
 
 # ── Disabled (too noisy in this layout) ───────────────────────────────────
@@ -152,7 +152,7 @@ disabled = true
 [time]
 disabled = true                  # flip to false if you want a clock
 format   = "[ $time]($style) "
-style    = "#6c7086"
+style    = "#414868"
 
 [memory_usage]
 disabled = true

@@ -241,7 +241,9 @@ fi
 echo "🔗 Linking dotfiles..."
 link_file .zshrc
 link_file .config/starship.toml
+link_file .config/ghostty/themes/tokyonight
 link_file .config/ghostty/config
+link_file .config/fastfetch/config.jsonc
 link_file_if_missing .gitconfig
 
 # ── Default shell ──────────────────────────────────────────────────────────

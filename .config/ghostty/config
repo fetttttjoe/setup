@@ -17,31 +17,30 @@ font-feature = liga
 adjust-cell-height = -5%
 
 # ── Theme ─────────────────────────────────────────────────────────────────
-# Catppuccin Mocha — matches the shell styling configured in:
-#   ~/.config/starship.toml  (Catppuccin Mocha-aligned prompt palette)
-#   ~/.zshrc                (BAT_THEME="Catppuccin-mocha")
-theme = Catppuccin Mocha
+# TokyoNight — imported from:
+#   https://ghostty-style.vercel.app/config/tokyonight
+theme = tokyonight
 
-# ── Background opacity + blur ─────────────────────────────────────────────
-# Near-opaque so the Catppuccin palette stays clean even when Ghostty is
-# above a bright browser window; blur is ignored on GNOME/Mutter.
-background-opacity = 0.98
-background-blur = 20
+# ── Background opacity ────────────────────────────────────────────────────
+# Match the TokyoNight preview exactly. Transparency can make colors look
+# different depending on the window underneath.
+background-opacity = 1
 
 # ── Cursor ────────────────────────────────────────────────────────────────
 cursor-style = bar
 cursor-style-blink = true
-# Catppuccin pink accent cursor.
-cursor-color = #f5c2e7
+# TokyoNight cursor colors.
+cursor-color = #c0caf5
+cursor-text = #15161e
 
 # ── Selection / copy ─────────────────────────────────────────────────────
 # Selecting text with the mouse copies it straight to the system clipboard
 # so Ctrl+V works without right-click → copy. PRIMARY (middle-click paste)
 # keeps working normally on X11.
 copy-on-select = clipboard
-# Soft Catppuccin selection tint.
-selection-background = #45475a
-selection-foreground = #cdd6f4
+# TokyoNight selection tint.
+selection-background = #33467c
+selection-foreground = #c0caf5
 
 # ── Window aesthetics ─────────────────────────────────────────────────────
 window-padding-x = 10
