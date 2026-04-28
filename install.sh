@@ -237,29 +237,21 @@ else
     echo "↪ gsettings not available; skipping GNOME/Layan desktop theme."
 fi
 
-# ── Node.js + pi coding agent ──────────────────────────────────────────────
+# ── Bun + pi coding agent ─────────────────────────────────────────────────
 echo "🤖 Setting up pi coding agent..."
 
-# Install nvm if missing
-if [ ! -d "$HOME/.nvm" ]; then
-    echo "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+# Install bun if missing
+if ! command -v bun >/dev/null 2>&1; then
+    echo "Installing bun..."
+    curl -fsSL https://bun.sh/install | bash
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
-# Source nvm for this session
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# Install Node.js LTS if missing
-if ! command -v node >/dev/null 2>&1; then
-    echo "Installing Node.js LTS..."
-    nvm install --lts
-fi
-
-# Install pi coding agent globally
+# Install pi coding agent globally via bun
 if ! command -v pi >/dev/null 2>&1; then
     echo "Installing pi coding agent..."
-    npm install -g @mariozechner/pi-coding-agent
+    bun add -g @mariozechner/pi-coding-agent
 fi
 
 # Install pi theme package (idempotent — pi skips if already installed)

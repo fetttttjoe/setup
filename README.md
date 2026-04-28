@@ -40,7 +40,7 @@ For Git, the installer is deliberately conservative:
 
 ## Pi coding agent
 
-The installer sets up [pi](https://github.com/badlogic/pi-mono) (Node.js via nvm, pi via npm).
+The installer sets up [pi](https://github.com/badlogic/pi-mono) via bun (`bun install -g`).
 Pi config is symlinked from the repo into `~/.pi/agent/`.
 
 Included extensions:
