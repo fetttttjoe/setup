@@ -19,7 +19,7 @@
   },
   "theme": "pi-theme-night",
   "packages": [
-    "../../Work/pi-theme"
+    "git:github.com/fetttttjoe/pi-theme"
   ],
   "hideThinkingBlock": false
 }

@@ -237,6 +237,37 @@ else
     echo "↪ gsettings not available; skipping GNOME/Layan desktop theme."
 fi
 
+# ── Node.js + pi coding agent ──────────────────────────────────────────────
+echo "🤖 Setting up pi coding agent..."
+
+# Install nvm if missing
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+
+# Source nvm for this session
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Install Node.js LTS if missing
+if ! command -v node >/dev/null 2>&1; then
+    echo "Installing Node.js LTS..."
+    nvm install --lts
+fi
+
+# Install pi coding agent globally
+if ! command -v pi >/dev/null 2>&1; then
+    echo "Installing pi coding agent..."
+    npm install -g @mariozechner/pi-coding-agent
+fi
+
+# Install pi theme package (idempotent — pi skips if already installed)
+if command -v pi >/dev/null 2>&1; then
+    echo "Installing pi theme..."
+    pi install git:github.com/fetttttjoe/pi-theme 2>/dev/null || true
+fi
+
 # ── Dotfiles ───────────────────────────────────────────────────────────────
 echo "🔗 Linking dotfiles..."
 link_file .zshrc
@@ -245,6 +276,21 @@ link_file .config/ghostty/themes/tokyonight
 link_file .config/ghostty/config
 link_file .config/fastfetch/config.jsonc
 link_file_if_missing .gitconfig
+
+# Pi agent config (extensions, skills, settings — not auth or sessions)
+link_file .pi/agent/AGENTS.md
+link_file .pi/agent/settings.json
+link_file .pi/agent/extensions/claude-auth.ts
+link_file .pi/agent/extensions/stats-line.ts
+link_file .pi/agent/extensions/plan-mode/index.ts
+link_file .pi/agent/extensions/plan-mode/questionnaire.ts
+link_file .pi/agent/extensions/plan-mode/utils.ts
+link_file .pi/agent/bin/fd
+link_file .pi/agent/bin/rg
+for skill_dir in "$repo_dir"/.pi/agent/skills/*/; do
+    skill_name="$(basename "$skill_dir")"
+    link_file ".pi/agent/skills/$skill_name/SKILL.md"
+done
 
 # ── Default shell ──────────────────────────────────────────────────────────
 if [[ "${SHELL:-}" != */zsh ]]; then
