@@ -1,0 +1,25 @@
+{
+  "lastChangelogVersion": "0.70.5",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-6",
+  "defaultThinkingLevel": "xhigh",
+  "enableInstallTelemetry": false,
+  "enableSkillCommands": true,
+  "compaction": {
+    "enabled": true
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 5,
+    "baseDelayMs": 2000,
+    "provider": {
+      "maxRetries": 3,
+      "maxRetryDelayMs": 60000
+    }
+  },
+  "theme": "pi-theme-night",
+  "packages": [
+    "../../Work/pi-theme"
+  ],
+  "hideThinkingBlock": false
+}
