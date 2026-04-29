@@ -246,6 +246,25 @@ link_file .config/ghostty/config
 link_file .config/fastfetch/config.jsonc
 link_file_if_missing .gitconfig
 
+# ── Pi agent config ─────────────────────────────────────────────────────────
+echo "🤖 Linking pi agent config..."
+link_file .pi/agent/AGENTS.md
+link_file .pi/agent/settings.json
+link_file .pi/agent/extensions/claude-auth.ts
+link_file .pi/agent/extensions/stats-line.ts
+link_file .pi/agent/extensions/plan-mode/index.ts
+link_file .pi/agent/extensions/plan-mode/questionnaire.ts
+link_file .pi/agent/extensions/plan-mode/utils.ts
+link_file .pi/agent/skills/brainstorming/SKILL.md
+link_file .pi/agent/skills/caveman/SKILL.md
+link_file .pi/agent/skills/diagnose/SKILL.md
+link_file .pi/agent/skills/engineering-standards/SKILL.md
+link_file .pi/agent/skills/grill-me/SKILL.md
+link_file .pi/agent/skills/tdd/SKILL.md
+link_file .pi/agent/skills/verification/SKILL.md
+link_file .pi/agent/skills/writing-plans/SKILL.md
+link_file .pi/agent/skills/zoom-out/SKILL.md
+
 # ── Default shell ──────────────────────────────────────────────────────────
 if [[ "${SHELL:-}" != */zsh ]]; then
     echo "Changing default shell to Zsh..."
