@@ -273,6 +273,8 @@ link_file_if_missing .gitconfig
 echo "🤖 Linking pi agent config..."
 link_file .pi/agent/AGENTS.md
 link_file .pi/agent/settings.json
+link_file .pi/agent/bin/fd
+link_file .pi/agent/bin/rg
 link_file .pi/agent/extensions/claude-auth.ts
 link_file .pi/agent/extensions/stats-line.ts
 link_file .pi/agent/extensions/plan-mode/index.ts
