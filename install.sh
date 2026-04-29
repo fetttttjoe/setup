@@ -237,6 +237,29 @@ else
     echo "↪ gsettings not available; skipping GNOME/Layan desktop theme."
 fi
 
+# ── Bun + pi coding agent ─────────────────────────────────────────────────
+echo "🤖 Setting up pi coding agent..."
+
+# Install bun if missing
+if ! command -v bun >/dev/null 2>&1; then
+    echo "Installing bun..."
+    curl -fsSL https://bun.sh/install | bash
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+fi
+
+# Install pi coding agent globally via bun
+if ! command -v pi >/dev/null 2>&1; then
+    echo "Installing pi coding agent..."
+    bun add -g @mariozechner/pi-coding-agent
+fi
+
+# Install pi theme package (idempotent — pi skips if already installed)
+if command -v pi >/dev/null 2>&1; then
+    echo "Installing pi theme..."
+    pi install git:github.com/fetttttjoe/pi-theme 2>/dev/null || true
+fi
+
 # ── Dotfiles ───────────────────────────────────────────────────────────────
 echo "🔗 Linking dotfiles..."
 link_file .zshrc
