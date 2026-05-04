@@ -2,3 +2,6 @@
 # Pi agent secrets & sessions
 .pi/agent/auth.json
 .pi/agent/sessions/
+
+# Personal git config (may contain user identity / credential tokens)
+.gitconfig
