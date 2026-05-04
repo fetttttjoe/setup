@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.70.6",
+  "lastChangelogVersion": "0.72.1",
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-sonnet-4-6",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "claude-opus-4-7",
+  "defaultThinkingLevel": "xhigh",
   "enableInstallTelemetry": false,
   "enableSkillCommands": true,
   "compaction": {
@@ -21,5 +21,5 @@
   "packages": [
     "git:github.com/fetttttjoe/pi-theme"
   ],
-  "hideThinkingBlock": false
+  "hideThinkingBlock": true
 }
