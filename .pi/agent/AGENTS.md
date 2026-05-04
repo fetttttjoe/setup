@@ -29,9 +29,19 @@ Invoke these explicitly when the task fits, or let the agent auto-load by descri
 - `/skill:zoom-out` — map unfamiliar code: modules, callers, and key seams
 - `/skill:caveman` — ultra-compressed mode (~75% fewer tokens); say "caveman mode" to activate
 
+## Skill structure convention
+
+Skills come in two layouts:
+
+- **Single-file** (≤ ~40 lines): just `SKILL.md`. Used for tiny meta-skills (caveman, grill-me, zoom-out).
+- **Split** (everything else): `SKILL.md` (trigger + description), `instructions.md` (the process), `tools.md` (pi tools used). When a split skill is invoked, read all three files.
+
+This keeps trigger descriptions cheap to auto-load and makes each skill independently swappable: when a skill is obsoleted by model improvements, drop the directory without hunting for tool dependencies elsewhere.
+
 ## Mode awareness
 
-- **Plan mode** (Ctrl+Alt+P or `/plan`): read-only. Produce a plan; do not modify files.
-- **Build mode** (Ctrl+Alt+P or `/build`): execute the plan with full tools.
+- `Ctrl+Alt+P` toggles plan ↔ build (or use `/plan` and `/build` explicitly).
+- **Plan mode** is read-only: tools restricted to `read`, `grep`, `find`, `ls`, `questionnaire`. Produce a plan; do not modify files.
+- **Build mode** restores the full tool set. Execute the plan.
 
 The footer always shows the current mode. A banner appears below the editor when in plan mode.
