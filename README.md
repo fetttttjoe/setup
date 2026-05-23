@@ -41,15 +41,26 @@ For Git, the installer is deliberately conservative:
 ## Pi coding agent
 
 The installer sets up [pi](https://github.com/badlogic/pi-mono) via bun (`bun install -g`).
-Pi config is symlinked from the repo into `~/.pi/agent/`.
+Pi config is symlinked from the repo into `~/.pi/agent/`, except for `settings.json` (see below).
 
 Included extensions:
 - **plan-mode** — plan/build mode toggle with interactive Q&A (`/plan`, `/build`, `Ctrl+Alt+P`)
 - **claude-auth** — Claude OAuth authentication
 - **stats-line** — per-turn token/throughput footer
+- **security-guidance** — blocks `edit`/`write` calls that match known unsafe patterns (eval, exec, innerHTML, pickle, os.system, GitHub Actions injection). Disable with `ENABLE_SECURITY_REMINDER=0`. Ported from Anthropic's `claude-plugins-official/security-guidance`.
 
 The [pi-theme](https://github.com/fetttttjoe/pi-theme) is installed as a git package.
 After install, authenticate with `pi` then `/login` or set `ANTHROPIC_API_KEY`.
+
+### settings.json: template vs live file
+
+Pi mutates `~/.pi/agent/settings.json` at runtime (changelog version bumps, packages list growth). To avoid that drift leaking back into the repo:
+
+- The tracked template is `.pi/agent/settings.json.example`.
+- `install.sh` copies it to `~/.pi/agent/settings.json` only on fresh installs (preserves your live file if one already exists).
+- The live `~/.pi/agent/settings.json` is gitignored.
+
+To change defaults that ship to fresh installs, edit `settings.json.example` and commit. To change your local behaviour, edit `~/.pi/agent/settings.json` directly — it won't be tracked.
 
 ## Notes
 

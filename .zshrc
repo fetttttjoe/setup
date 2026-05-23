@@ -109,3 +109,6 @@ if command -v fastfetch >/dev/null 2>&1 && [[ $- == *i* ]] && [[ -z "$FASTFETCH_
   export FASTFETCH_SHOWN=1
   fastfetch
 fi
+
+# bun completions
+[ -s "/home/yanneck/.bun/_bun" ] && source "/home/yanneck/.bun/_bun"

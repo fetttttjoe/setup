@@ -133,6 +133,29 @@ link_file_if_missing() {
     ln -s "$source_path" "$target_path"
 }
 
+# Copy a template into place only on fresh installs. Deliberately NOT a
+# symlink: pi mutates settings.json at runtime (lastChangelogVersion bumps,
+# package list growth) and that runtime state must not drift back into the
+# repo. The repo carries `<name>.example`; the live file is gitignored.
+copy_example_if_missing() {
+    local example_relative="$1"
+    local target_relative="$2"
+    local source_path="$repo_dir/$example_relative"
+    local target_path="$HOME/$target_relative"
+
+    if [ -e "$target_path" ] || [ -L "$target_path" ]; then
+        echo "↪ Preserving existing ~/$target_relative."
+        return
+    fi
+    if [ ! -e "$source_path" ]; then
+        echo "↪ Missing $source_path; skipping."
+        return
+    fi
+
+    mkdir -p "$(dirname "$target_path")"
+    cp "$source_path" "$target_path"
+}
+
 # Link every regular file inside a skill directory (SKILL.md + instructions.md +
 # tools.md + any sub-pages like testing-anti-patterns.md). The original script
 # only linked SKILL.md, which broke split skills on fresh installs because
@@ -292,7 +315,7 @@ link_file_if_missing .gitconfig
 # ── Pi agent config ─────────────────────────────────────────────────────────
 echo "🤖 Linking pi agent config..."
 link_file .pi/agent/AGENTS.md
-link_file .pi/agent/settings.json
+copy_example_if_missing .pi/agent/settings.json.example .pi/agent/settings.json
 link_file .pi/agent/bin/fd
 link_file .pi/agent/bin/rg
 link_file .pi/agent/extensions/claude-auth.ts

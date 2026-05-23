@@ -3,5 +3,11 @@
 .pi/agent/auth.json
 .pi/agent/sessions/
 
+# Pi mutates settings.json at runtime (lastChangelogVersion bumps, package
+# list growth, etc.) — we don't want that drifting back into the repo.
+# The tracked template is settings.json.example; install.sh seeds the live
+# file from it only when missing.
+.pi/agent/settings.json
+
 # Personal git config (may contain user identity / credential tokens)
 .gitconfig
