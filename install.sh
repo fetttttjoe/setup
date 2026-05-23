@@ -133,6 +133,26 @@ link_file_if_missing() {
     ln -s "$source_path" "$target_path"
 }
 
+# Link every regular file inside a skill directory (SKILL.md + instructions.md +
+# tools.md + any sub-pages like testing-anti-patterns.md). The original script
+# only linked SKILL.md, which broke split skills on fresh installs because
+# `instructions.md` / `tools.md` were never copied over.
+link_skill() {
+    local skill_name="$1"
+    local skill_dir=".pi/agent/skills/$skill_name"
+    local skill_src="$repo_dir/$skill_dir"
+
+    if [ ! -d "$skill_src" ]; then
+        echo "↪ No skill at $skill_dir; skipping."
+        return
+    fi
+
+    local file
+    while IFS= read -r -d '' file; do
+        link_file "${file#$repo_dir/}"
+    done < <(find "$skill_src" -type f -print0)
+}
+
 # ── Base packages ──────────────────────────────────────────────────────────
 echo "📦 Installing base packages..."
 sudo apt-get update -y
@@ -276,19 +296,23 @@ link_file .pi/agent/settings.json
 link_file .pi/agent/bin/fd
 link_file .pi/agent/bin/rg
 link_file .pi/agent/extensions/claude-auth.ts
+link_file .pi/agent/extensions/security-guidance.ts
 link_file .pi/agent/extensions/stats-line.ts
 link_file .pi/agent/extensions/plan-mode/index.ts
 link_file .pi/agent/extensions/plan-mode/questionnaire.ts
 link_file .pi/agent/extensions/plan-mode/utils.ts
-link_file .pi/agent/skills/brainstorming/SKILL.md
-link_file .pi/agent/skills/caveman/SKILL.md
-link_file .pi/agent/skills/diagnose/SKILL.md
-link_file .pi/agent/skills/engineering-standards/SKILL.md
-link_file .pi/agent/skills/grill-me/SKILL.md
-link_file .pi/agent/skills/tdd/SKILL.md
-link_file .pi/agent/skills/verification/SKILL.md
-link_file .pi/agent/skills/writing-plans/SKILL.md
-link_file .pi/agent/skills/zoom-out/SKILL.md
+link_skill brainstorming
+link_skill caveman
+link_skill commit-messages
+link_skill diagnose
+link_skill engineering-standards
+link_skill executing-plans
+link_skill grill-me
+link_skill tdd
+link_skill using-git-worktrees
+link_skill verification
+link_skill writing-plans
+link_skill zoom-out
 
 # ── Default shell ──────────────────────────────────────────────────────────
 if [[ "${SHELL:-}" != */zsh ]]; then

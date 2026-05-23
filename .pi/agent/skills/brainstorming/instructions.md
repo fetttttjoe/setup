@@ -48,6 +48,27 @@ Once intent and decisions are settled, propose:
 
 Get explicit approval before implementing.
 
+### Step 4 — Persist the design (when it's non-trivial)
+
+For anything beyond a one-file change, write the approved design to `docs/specs/YYYY-MM-DD-<topic>.md` (or wherever the project keeps specs) before moving to a plan or code. This gives the implementation phase — and future sessions — a stable reference.
+
+Skip the doc for: single-file changes, throwaway prototypes, projects where you've already opened a plan that captures the design inline.
+
+### Spec self-review
+
+After writing the design doc, scan it once with fresh eyes:
+
+- **Placeholders** — any `TBD`, `TODO`, or vague "appropriate" / "reasonable" hand-waving? Resolve or delete.
+- **Internal consistency** — do the sections contradict each other? Does the stated architecture match the feature description?
+- **Ambiguity** — could any requirement be read two different ways? Pick one and make it explicit.
+- **Scope** — is this focused enough for one implementation, or does it need to be split?
+
+Fix inline. Don't re-review. Then hand back to the user for sign-off on the written doc — the in-conversation approval was for the verbal design; this confirms the written version is what they meant.
+
+## Implementation handoff
+
+Do not invoke an implementation skill from inside brainstorming. The next skill is `writing-plans` (for multi-step work) or direct implementation under `engineering-standards` / `tdd` (for small focused changes). Wait for the user to say go.
+
 ## Anti-patterns
 
 - Asking 10 questions when 2 would do

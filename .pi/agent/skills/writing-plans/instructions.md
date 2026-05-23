@@ -2,6 +2,10 @@
 
 Convert a spec into a step-by-step plan with explicit verification criteria.
 
+**Reader assumption:** write for a competent engineer who has zero context for this codebase and questionable taste. Exact file paths, complete code or commands, no placeholders. They will read tasks out of order — don't say "like task 3", repeat what matters.
+
+**Persist the plan:** save to `docs/plans/YYYY-MM-DD-<feature-name>.md` (or wherever the project keeps plans). A plan that lives only in chat history doesn't survive a context reset.
+
 ## When to use
 
 - The task has 3+ distinct steps
@@ -39,6 +43,18 @@ Convert a spec into a step-by-step plan with explicit verification criteria.
 - **Verification matrix** — concrete tests with expected outcomes
 - **Files touched** — every file you'll create or modify, listed once
 
+## Bite-sized steps
+
+Each step is one action a competent engineer can do in 2–5 minutes. Steps that touch code show the actual code; steps that run commands show the exact command and expected output.
+
+Plan-failure patterns — never write these:
+
+- `TBD`, `TODO`, `implement later`, `fill in details`
+- "Add appropriate error handling" / "handle edge cases" without saying which cases or how
+- "Write tests for the above" without the actual test code
+- "Similar to step N" — repeat what matters, the reader may be reading out of order
+- References to types, functions, or methods not defined in any step
+
 ## Risk ordering
 
 - Phase 1 = lowest-risk, fully reversible (config tweaks, comment changes)
@@ -59,7 +75,17 @@ Investigate <thing>. Decision branch:
 - If neither → take path 3 (expensive)
 ```
 
+## Self-review before sign-off
+
+With fresh eyes, scan the plan against the spec:
+
+1. **Spec coverage** — for each requirement in the spec, point to the task that implements it. List any gaps.
+2. **Placeholder scan** — any of the failure patterns above? Fix them.
+3. **Type/name consistency** — a function called `clearLayers()` in step 3 but `clearFullLayers()` in step 7 is a bug. Same for property names, file paths, command flags.
+
+Fix inline. No need to re-review.
+
 ## Sign-off
 
 End the plan with: "Ready to execute when you say go."
-Don't start coding until the user approves.
+Don't start coding until the user approves. Execution happens under the `executing-plans` skill.

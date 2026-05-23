@@ -7,5 +7,5 @@ description: Use at the start of any coding session, before designing or reviewi
 
 This skill is split for portability. **When invoked, read both files:**
 
-1. [instructions.md](instructions.md) — the six rules and self-tests
+1. [instructions.md](instructions.md) — the seven rules and self-tests
 2. [tools.md](tools.md) — pi tools used by this skill
