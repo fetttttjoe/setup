@@ -76,12 +76,6 @@ if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# zoxide — smarter `cd`. `z foo` jumps to the most-frecent dir matching foo,
-# `zi foo` opens an fzf picker. Replaces `cd` for everyday use.
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh --cmd cd)"
-fi
-
 # eza — modern `ls` with icons + git status.
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --icons --group-directories-first'
@@ -112,3 +106,14 @@ fi
 
 # bun completions
 [ -s "/home/yanneck/.bun/_bun" ] && source "/home/yanneck/.bun/_bun"
+
+# Added by codebase-memory-mcp install
+export PATH="/home/yanneck/.local/bin:$PATH"
+
+# zoxide — smarter `cd`. `z foo` jumps to the most-frecent dir matching foo,
+# `zi foo` opens an fzf picker. Replaces `cd` for everyday use.
+# MUST stay last: zoxide wraps `cd` and installs a precmd hook, and anything sourced after it
+# (bun completions, PATH edits) can re-wrap them — which is what its startup doctor warns about.
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
