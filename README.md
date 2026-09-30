@@ -10,7 +10,7 @@ It tracks the normal terminal environment used on this machine:
 - Zsh + Oh My Zsh
 - Starship prompt with a readable two-line TokyoNight-aligned layout
 - Modern CLI helpers: `eza`, `bat`, `zoxide`, `fzf`, and TokyoNight-aligned `fastfetch`
-- Layan-Dark GTK desktop theme when GNOME settings are available
+- Layan-Dark GTK desktop theme (including libadwaita apps) when GNOME settings are available
 - [pi coding agent](https://github.com/badlogic/pi-mono) with plan-mode extension, skills, and custom theme
 
 ## Install
@@ -35,7 +35,7 @@ Existing files are moved into `~/dotfiles_old/<timestamp>/` before linking.
 For Git, the installer is deliberately conservative:
 
 - Existing `~/.gitconfig` files are preserved.
-- If no `~/.gitconfig` exists, the repo links a generic config with safe defaults only.
+- If no `~/.gitconfig` exists, it is linked to `<repo>/.gitconfig`, which is gitignored. The first `git config --global` call creates it there.
 - Personal Git identity, company remotes, access tokens, and other secrets are not tracked here.
 
 ## Pi coding agent
@@ -67,5 +67,7 @@ To change defaults that ship to fresh installs, edit `settings.json.example` and
 Ghostty is installed by the script. If the package is not available from Ubuntu's default apt sources, the script adds `ppa:mkasberg/ghostty-ubuntu` and installs it from there.
 
 `fastfetch` is installed from Ubuntu apt when available. If apt does not provide it, the script downloads the latest `.deb` release from `fastfetch-cli/fastfetch` for `amd64` or `arm64`.
+
+After an Ubuntu release upgrade, rerun `./install.sh`. It updates the Layan checkout and reinstalls the theme. An old Layan build clashes with a newer libadwaita and makes GNOME apps look broken.
 
 The prompt avoids hidden path substitutions and blank runtime symbols, so it should stay readable on any machine.

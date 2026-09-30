@@ -268,11 +268,17 @@ if command -v gsettings >/dev/null 2>&1; then
     layan_dir="$HOME/Layan-gtk-theme"
     if [ ! -d "$layan_dir" ]; then
         git clone https://github.com/vinceliuice/Layan-gtk-theme.git "$layan_dir"
+    else
+        # A stale checkout breaks libadwaita apps after a GNOME/GTK upgrade.
+        git -C "$layan_dir" pull --ff-only || echo "↪ Could not update $layan_dir; installing the existing checkout."
     fi
 
-    if "$layan_dir/install.sh"; then
+    # -l links the theme's gtk-4.0 CSS into ~/.config/gtk-4.0 so libadwaita
+    # apps follow Layan too. Rerun this script after a distro upgrade.
+    if "$layan_dir/install.sh" -c dark -l; then
         gsettings set org.gnome.desktop.interface gtk-theme 'Layan-Dark'
         gsettings set org.gnome.desktop.interface icon-theme 'Yaru-dark'
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     else
         echo "↪ Layan theme install failed; continuing without changing the GTK theme."
     fi
@@ -323,7 +329,6 @@ link_file .pi/agent/extensions/security-guidance.ts
 link_file .pi/agent/extensions/stats-line.ts
 link_file .pi/agent/extensions/plan-mode/index.ts
 link_file .pi/agent/extensions/plan-mode/questionnaire.ts
-link_file .pi/agent/extensions/plan-mode/utils.ts
 link_skill brainstorming
 link_skill caveman
 link_skill commit-messages

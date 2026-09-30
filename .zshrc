@@ -63,7 +63,9 @@ export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init - zsh)"
+  # --no-rehash: a stale shims lock otherwise blocks every new shell for 60s.
+  # Run `pyenv rehash` manually after installing a Python version.
+  eval "$(pyenv init - --no-rehash zsh)"
 fi
 
 # ---------------------------------------------------------------------------

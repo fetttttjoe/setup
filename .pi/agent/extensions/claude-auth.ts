@@ -7,8 +7,11 @@
  * the per-token "extra usage" pool.
  *
  * ── What it does ─────────────────────────────────────────────────────────────
- *   1. Reads OAuth tokens from ~/.claude/.credentials.json (single source of
- *      truth shared with the Claude Code CLI).
+ *   1. Reads OAuth tokens from ~/.claude/.credentials.json (the single source
+ *      of truth shared with the Claude Code CLI). pi keeps no identity of its
+ *      own: getApiKey/refreshToken read this file live, so pi always bills
+ *      whatever account Claude Code is logged into. Log out / log in there and
+ *      pi follows automatically — no separate `pi /login` required.
  *   2. Refreshes tokens via the Claude OAuth endpoint and writes the new tokens
  *      back to the credentials file so the Claude Code CLI stays in sync.
  *   3. Injects the full set of Claude Code beta flags + identity headers as
@@ -479,19 +482,32 @@ export default function claudeAuth(pi: ExtensionAPI): void {
       },
 
       /**
-       * Called automatically by pi when the stored access token is near expiry.
-       * Refreshes via the Claude OAuth endpoint and writes the new tokens back
-       * to ~/.claude/.credentials.json so the Claude Code CLI stays in sync.
+       * Called automatically by pi when its stored access token is near expiry.
+       *
+       * pi keeps NO independent identity. Instead of refreshing the token pi
+       * happens to have cached (`stored`), we always re-read
+       * ~/.claude/.credentials.json and refresh *that* account's token. This is
+       * what makes pi transparently follow Claude Code: log out / log in there
+       * and pi picks up the new account on its own, and pi can never refresh a
+       * stale account and clobber the credentials file with the wrong login.
        */
-      async refreshToken(stored: PiOAuthCredentials): Promise<PiOAuthCredentials> {
-        const creds = await refreshAccessToken(stored.refresh);
-        writeCreds(creds);
+      async refreshToken(_stored: PiOAuthCredentials): Promise<PiOAuthCredentials> {
+        const creds = await refreshIfExpiring(readCreds());
         return toPiCredentials(creds);
       },
 
-      /** Returns the access token; pi injects it as `Authorization: Bearer <token>`. */
+      /**
+       * Returns the access token pi injects as `Authorization: Bearer <token>`.
+       * Reads ~/.claude/.credentials.json live on every call so pi always uses
+       * whatever account Claude Code is currently logged into, falling back to
+       * pi's last-known token only if the credentials file is unreadable.
+       */
       getApiKey(stored: PiOAuthCredentials): string {
-        return stored.access;
+        try {
+          return readCreds().accessToken;
+        } catch {
+          return stored.access;
+        }
       },
     },
   });
