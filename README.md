@@ -68,6 +68,8 @@ Ghostty is installed by the script. If the package is not available from Ubuntu'
 
 `fastfetch` is installed from Ubuntu apt when available. If apt does not provide it, the script downloads the latest `.deb` release from `fastfetch-cli/fastfetch` for `amd64` or `arm64`.
 
+`~/.config/gtk-4.0/gtk.css` loads Layan-Dark, then `.config/gtk-4.0/layan-fixes.css` from this repo. That file patches spots where Layan lags behind current GNOME apps, such as the Nautilus 50 sidebar. Edits there apply on the next app start.
+
 After an Ubuntu release upgrade, rerun `./install.sh`. It updates the Layan checkout and reinstalls the theme. An old Layan build clashes with a newer libadwaita and makes GNOME apps look broken.
 
 The prompt avoids hidden path substitutions and blank runtime symbols, so it should stay readable on any machine.

@@ -1,0 +1,36 @@
+/* Fixes on top of Layan-Dark, loaded after it from ~/.config/gtk-4.0/gtk.css.
+ *
+ * Nautilus 50 dropped the .sidebar-icon / .sidebar-label classes that Layan
+ * styles its Files sidebar through. Without them the names overlap the purple
+ * strip and the selected icon turns strip-coloured. These rules re-apply
+ * Layan's own values to the new row structure: row > revealer > box > image, label.
+ */
+
+#NautilusFileChooser placessidebar .navigation-sidebar > row > revealer.sidebar-revealer > box > image:first-child,
+.nautilus-window placessidebar .navigation-sidebar > row > revealer.sidebar-revealer > box > image:first-child {
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 6px;
+}
+
+#NautilusFileChooser placessidebar .navigation-sidebar > row > revealer.sidebar-revealer > box > label,
+.nautilus-window placessidebar .navigation-sidebar > row > revealer.sidebar-revealer > box > label {
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 0 7px 7px 0;
+}
+
+#NautilusFileChooser placessidebar .navigation-sidebar > row:hover > revealer.sidebar-revealer > box > label,
+.nautilus-window placessidebar .navigation-sidebar > row:hover > revealer.sidebar-revealer > box > label {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+#NautilusFileChooser placessidebar .navigation-sidebar > row:selected > revealer.sidebar-revealer > box > label,
+.nautilus-window placessidebar .navigation-sidebar > row:selected > revealer.sidebar-revealer > box > label {
+  color: #9e9ff9;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+#NautilusFileChooser placessidebar .navigation-sidebar > row:selected > revealer.sidebar-revealer > box > image:first-child,
+.nautilus-window placessidebar .navigation-sidebar > row:selected > revealer.sidebar-revealer > box > image:first-child {
+  color: #FFFFFF;
+}

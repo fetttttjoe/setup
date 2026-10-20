@@ -276,6 +276,11 @@ if command -v gsettings >/dev/null 2>&1; then
     # -l links the theme's gtk-4.0 CSS into ~/.config/gtk-4.0 so libadwaita
     # apps follow Layan too. Rerun this script after a distro upgrade.
     if "$layan_dir/install.sh" -c dark -l; then
+        # Replace Layan's gtk.css link with Layan plus our fixes on top.
+        rm -f "$HOME/.config/gtk-4.0/gtk.css"
+        printf '@import url("file://%s");\n@import url("file://%s");\n' \
+            "$HOME/.themes/Layan-Dark/gtk-4.0/gtk.css" \
+            "$repo_dir/.config/gtk-4.0/layan-fixes.css" > "$HOME/.config/gtk-4.0/gtk.css"
         gsettings set org.gnome.desktop.interface gtk-theme 'Layan-Dark'
         gsettings set org.gnome.desktop.interface icon-theme 'Yaru-dark'
         gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
